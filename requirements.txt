@@ -1,3 +1,10 @@
 ipykernel
 numpy
 matplotlib
+pygame
+vizdoom
+scikit-learn
+seaborn
+sciPy
+numpy
+pandas
