@@ -8,3 +8,4 @@ seaborn
 sciPy
 numpy
 pandas
+memory_profiler
