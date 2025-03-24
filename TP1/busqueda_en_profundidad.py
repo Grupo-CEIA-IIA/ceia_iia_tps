@@ -2,14 +2,14 @@ from aima_libs.hanoi_states import ProblemHanoi, StatesHanoi
 from aima_libs.tree_hanoi import NodeHanoi
 
 
-def breadth_first_search(number_disks=5):
+def depth_first_search(number_disks=5):
     # Inicializamos el problema
     list_disks = [i for i in range(5, 0, -1)]
     initial_state = StatesHanoi(list_disks, [], [], max_disks=number_disks)
     goal_state = StatesHanoi([], [], list_disks, max_disks=number_disks)
     problem = ProblemHanoi(initial=initial_state, goal=goal_state)
 
-    # Creamos una cola FIFO con el nodo inicial
+    # Creamos una cola LIFO con el nodo inicial
     frontier = [NodeHanoi(problem.initial)]  
 
     # Creamos el set con estados ya visitados
@@ -24,7 +24,8 @@ def breadth_first_search(number_disks=5):
         # Agregamos el estado del nodo al set. Esto evita guardar duplicados, porque set nunca tiene elementos repetidos
         explored.add(node.state)
         
-        if problem.goal_test(node.state):  # Comprobamos si hemos alcanzado el estado objetivo
+        # Comprobamos si hemos alcanzado el estado objetivo
+        if problem.goal_test(node.state):
             metrics = {
                 "solution_found": True,
                 "nodes_explored": node_explored,
@@ -47,15 +48,7 @@ def breadth_first_search(number_disks=5):
         "nodes_explored": node_explored,
         "states_visited": len(explored),
         "nodes_in_frontier": len(frontier),
-        "max_depth": node.depth, # OBS: Si no se encontró la solución, este valor solo tiene sentido en breadth_first_search, en otros casos se debe ir llevando registro de cual fue la máxima profundidad
+        "max_depth": node.depth,
         "cost_total": None,
     }
     return None, metrics
-
-if __name__ == "__main__":
-    solution, metrics = breadth_first_search(number_disks=5)
-    for key, value in metrics.items():
-        print(f"{key}: {value}")
-    for nodos in solution.path():
-        print(nodos)
-    solution.generate_solution_for_simulator()
